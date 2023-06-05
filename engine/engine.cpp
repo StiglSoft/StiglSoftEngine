@@ -16,14 +16,18 @@ void Update(){
     gluPerspective(45.0f, (GLfloat)Width / (GLfloat)Height, 1.0f, 100.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(scriptData.cameraPosition.X,scriptData.cameraPosition.Y,scriptData.cameraPosition.Z,
-    scriptData.cameraTarget.X,scriptData.cameraTarget.Y,scriptData.cameraTarget.Z,
-    scriptData.cameraUp.X,scriptData.cameraUp.Y,scriptData.cameraUp.Z);
+    
     for (GameObject go : scriptData.gameobjects) {
-        glRotatef(0 ,go.transform.rotation.X, go.transform.rotation.Y, go.transform.rotation.Z);
-        glColor3f(1.0f, 1.0f, 1.0f);
+        glPushMatrix();
+        glLoadIdentity();   
+        gluLookAt(scriptData.cameraPosition.X,scriptData.cameraPosition.Y,scriptData.cameraPosition.Z,
+            scriptData.cameraTarget.X,scriptData.cameraTarget.Y,scriptData.cameraTarget.Z,
+            scriptData.cameraUp.X,scriptData.cameraUp.Y,scriptData.cameraUp.Z);
         glTranslatef(go.transform.position.X, go.transform.position.Y, go.transform.position.Z);
+        glRotatef(0 ,go.transform.rotation.X, go.transform.rotation.Y, go.transform.rotation.Z);
+        glColor3f(go.color.R,go.color.G,go.color.B);
         glutWireCube(go.transform.scale);
+        glPopMatrix();
     }
     glFlush(); 
     glutSwapBuffers();
@@ -36,7 +40,7 @@ void InitEngine(int argc, char **argv){
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(Width, Height);
-    glutCreateWindow("StiglEngine");
+    glutCreateWindow("Stigl Soft Engine");
     glutDisplayFunc(Update);
     glutKeyboardFunc(KeyboardCallBack);
     glutMainLoop();
