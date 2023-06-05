@@ -15,15 +15,17 @@ extern "C" {
         dataptr->cameraPosition.Z = 5;
     }
     void update(){
-        if(direction)z -= 0.1f;
+        /*if(direction)z -= 0.1f;
         else z += 0.1f;
         if(z > 2)
             direction = 1;
         else if(z < -2)
             direction = 0;
-        dataptr->gameobjects[0].transform.position.X= z;
+        dataptr->gameobjects[0].transform.position.X= z;*/
     }
-    void keyboard(){
-        
+    void keyboard(char ch){
+        if(ch == 'w'){
+            dataptr->gameobjects[0].transform.position.Z+= 0.1f;
+        }
     }
 }

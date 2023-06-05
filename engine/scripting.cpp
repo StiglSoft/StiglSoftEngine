@@ -24,17 +24,23 @@ void ExecuteUpdates(vector<void*> handles){
     for(void* handle : handles){
         typedef void (*UpdateFunc)();
         UpdateFunc update = reinterpret_cast<UpdateFunc>(dlsym(handle, "update"));
-        if (!update)
-            err(-1,"Failed to retrieve symbol: %s", dlerror());
+        if (!update)continue;
         update();
+    }
+}
+void ExecuteKeyboard(vector<void*> handles, char ch){
+    for(void* handle : handles){
+        typedef void (*KeyboardFunc)(char key);
+        KeyboardFunc keyboard = reinterpret_cast<KeyboardFunc>(dlsym(handle, "keyboard"));
+        if (!keyboard)continue;
+        keyboard(ch);
     }
 }
 void ExecuteStartups(vector<void*> handles, ScriptData* sd){
     for(void* handle : handles){
         typedef void (*StartupFunc)(ScriptData* sd);
         StartupFunc startup = reinterpret_cast<StartupFunc>(dlsym(handle, "start"));
-        if (!startup)
-            err(-1,"Failed to retrieve symbol: %s", dlerror());
+        if (!startup)continue;
         startup(sd);
     }
 }

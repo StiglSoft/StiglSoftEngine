@@ -29,12 +29,16 @@ void Update(){
     glutSwapBuffers();
     glutPostRedisplay();
 }
+void KeyboardCallBack(unsigned char ch, int x, int y){
+    ExecuteKeyboard(scripts,ch);
+}
 void InitEngine(int argc, char **argv){
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(Width, Height);
     glutCreateWindow("StiglEngine");
     glutDisplayFunc(Update);
+    glutKeyboardFunc(KeyboardCallBack);
     glutMainLoop();
 }
 int main(int argc, char **argv){
