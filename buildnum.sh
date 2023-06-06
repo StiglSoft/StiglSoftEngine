@@ -5,7 +5,7 @@ file_path="bn"
 if [ -f "$file_path" ]; then
   build_number=$(cat "$file_path")
 else
-  build_number=1
+  build_number=0
 fi
 build_number=$((build_number + 1))
 

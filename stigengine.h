@@ -3,6 +3,12 @@
 #include <vector>
 
 using namespace std;
+enum Shape{
+    wirebox,
+    fullbox,
+    fullcustom,
+    wirecustom
+};
 struct Vector2{
     float X = 0;
     float Y = 0;
@@ -30,6 +36,8 @@ struct Transform{
 struct GameObject{
     Transform transform;
     Color color;
+    Shape shape = Shape::wirebox;
+    vector<Vector3> veticles;
 };
 struct ScriptData{
     Vector3 cameraPosition = {0.0f,0.0f,0.0f};

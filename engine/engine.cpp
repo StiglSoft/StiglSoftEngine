@@ -26,7 +26,24 @@ void Update(){
         glTranslatef(go.transform.position.X, go.transform.position.Y, go.transform.position.Z);
         glRotatef(go.transform.rotationAngle ,go.transform.rotation.X, go.transform.rotation.Y, go.transform.rotation.Z);
         glColor3f(go.color.R,go.color.G,go.color.B);
-        glutWireCube(go.transform.scale);
+        if(go.shape == Shape::wirebox){
+            glutWireCube(go.transform.scale);
+        }else if(go.shape == Shape::fullbox){
+            glutSolidCube(go.transform.scale);
+        }else if(go.shape == Shape::wirecustom){
+            glBegin(GL_LINES);
+            for (Vector3 verticle : go.veticles) {
+                glVertex3f(verticle.X, verticle.Y, verticle.Z);
+            }
+            glEnd();
+        }else if(go.shape == Shape::fullcustom){
+            glBegin(GL_TRIANGLES);
+            for (Vector3 verticle : go.veticles) {
+                glVertex3f(verticle.X, verticle.Y, verticle.Z);
+            }
+            glEnd();
+        }
+        
         glPopMatrix();
     }
     glFlush(); 

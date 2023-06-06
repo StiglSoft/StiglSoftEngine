@@ -1,5 +1,6 @@
 .vscode/
 game/
+out/
 a.out
 script1.so
 bn

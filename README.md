@@ -1,0 +1,3 @@
+# StiglSoftEngine
+
+## A graphics engine
