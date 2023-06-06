@@ -46,3 +46,18 @@ struct ScriptData{
     float FovY = 60.0f;
     vector<GameObject> gameobjects;
 };
+Vector3 vec3Add(Vector3 v1, Vector3 v2){return {v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z};}
+Vector3 vec3Sub(Vector3 v1, Vector3 v2){return {v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z};}
+Vector3 vec3Mul(Vector3 v1, Vector3 v2){return {v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z};}
+Vector3 vec3Div(Vector3 v1, Vector3 v2){return {v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z};}
+
+Vector3 vec2Add(Vector2 v1, Vector2 v2){return {v1.X + v2.X, v1.Y + v2.Y};}
+Vector3 vec2Sub(Vector2 v1, Vector2 v2){return {v1.X - v2.X, v1.Y - v2.Y};}
+Vector3 vec2Mul(Vector2 v1, Vector2 v2){return {v1.X * v2.X, v1.Y * v2.Y};}
+Vector3 vec2Div(Vector2 v1, Vector2 v2){return {v1.X / v2.X, v1.Y / v2.Y};}
+
+Vector3 vec3Zero(){return {0,0,0};}
+Vector3 vec3One(){return {1,1,1};}
+Vector3 vec3UnitX(){return {1,0,0};}
+Vector3 vec3UnitY(){return {0,1,0};}
+Vector3 vec3UnitZ(){return {0,0,1};}
