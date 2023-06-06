@@ -5,15 +5,15 @@
 #include "../stigengine.h"
 #include "scripting.cpp"
 ScriptData scriptData;
-const int Width = 800;
-const int Height = 600;
+const int Width = 1280;
+const int Height = 720;
 vector<void*> scripts;
 void Update(){
     ExecuteUpdates(scripts);
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(45.0f, (GLfloat)Width / (GLfloat)Height, 1.0f, 100.0f);
+    gluPerspective(scriptData.FovY, (GLfloat)Width / (GLfloat)Height, 0.8f, 100.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
@@ -24,7 +24,7 @@ void Update(){
             scriptData.cameraTarget.X,scriptData.cameraTarget.Y,scriptData.cameraTarget.Z,
             scriptData.cameraUp.X,scriptData.cameraUp.Y,scriptData.cameraUp.Z);
         glTranslatef(go.transform.position.X, go.transform.position.Y, go.transform.position.Z);
-        glRotatef(0 ,go.transform.rotation.X, go.transform.rotation.Y, go.transform.rotation.Z);
+        glRotatef(go.transform.rotationAngle ,go.transform.rotation.X, go.transform.rotation.Y, go.transform.rotation.Z);
         glColor3f(go.color.R,go.color.G,go.color.B);
         glutWireCube(go.transform.scale);
         glPopMatrix();

@@ -25,6 +25,7 @@ struct Transform{
     Vector3 position = {0.0f,0.0f,0.0f};
     Vector3 rotation = {0.0f,0.0f,0.0f};
     float scale = 1.0f;
+    float rotationAngle = 0.0f; 
 };
 struct GameObject{
     Transform transform;
@@ -34,5 +35,6 @@ struct ScriptData{
     Vector3 cameraPosition = {0.0f,0.0f,0.0f};
     Vector3 cameraTarget = {0.0f,0.0f,0.0f};
     Vector3 cameraUp = {0.0f,1.0f,0.0f};
+    float FovY = 60.0f;
     vector<GameObject> gameobjects;
 };
