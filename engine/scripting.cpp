@@ -3,7 +3,7 @@
 #include <string>
 #include <dlfcn.h>
 #include "file.cpp"
-#include "../stigengine.h"
+#include "../stigengine.hh"
 
 void* loadDynamicLibrary(const std::string& filename) {
     void* libraryHandle = dlopen(filename.c_str(), RTLD_LAZY);

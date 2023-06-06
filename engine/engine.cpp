@@ -2,7 +2,7 @@
 #include <vector>
 #include <GL/gl.h>
 #include <GL/glut.h>
-#include "../stigengine.h"
+#include "../stigengine.hh"
 #include "scripting.cpp"
 ScriptData scriptData;
 const int Width = 1280;
