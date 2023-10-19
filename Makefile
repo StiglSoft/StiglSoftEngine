@@ -4,3 +4,7 @@ build:
 	./buildnum.sh
 run : build
 	./a.out
+release : build
+	upx -o b.out a.out
+	rm a.out -rf
+	mv b.out a.out
