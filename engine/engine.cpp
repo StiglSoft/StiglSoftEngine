@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <chrono>
+#include <ctime>
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include "../stigengine.hh"
@@ -8,7 +10,13 @@ ScriptData scriptData;
 const int Width = 1280;
 const int Height = 720;
 vector<void*> scripts;
+
+std::chrono::high_resolution_clock::duration t1, t2;
+bool keys[256];
 void Update(){
+    t2 = std::chrono::high_resolution_clock::now().time_since_epoch();
+    scriptData.deltaTimeUs = static_cast<int>(std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
+    t1 = std::chrono::high_resolution_clock::now().time_since_epoch();
     ExecuteUpdates(scripts);
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
@@ -16,7 +24,6 @@ void Update(){
     gluPerspective(scriptData.FovY, (GLfloat)Width / (GLfloat)Height, 0.8f, 100.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    
     for (GameObject go : scriptData.gameobjects) {
         glPushMatrix();
         glLoadIdentity();   
@@ -43,7 +50,6 @@ void Update(){
             }
             glEnd();
         }
-        
         glPopMatrix();
     }
     glFlush(); 
@@ -52,13 +58,28 @@ void Update(){
 }
 void KeyboardCallBack(unsigned char ch, int x, int y){
     ExecuteKeyboard(scripts,ch);
+    keys[ch] = 1;
+}
+void KeyboardUpCallBack(unsigned char ch, int x, int y){
+    keys[ch] = 0;
+}
+void MouseCallBack(int button, int state, int x, int y){
+    scriptData.mouseButton = button;
+}
+void MouseCallBack2(int x, int y){
+    scriptData.mouseX = x;
+    scriptData.mouseY = y;
 }
 void InitEngine(int argc, char **argv){
+    scriptData.keys = keys;
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(Width, Height);
     glutCreateWindow("Stigl Soft Engine");
     glutDisplayFunc(Update);
+    glutMouseFunc(MouseCallBack);
+    glutPassiveMotionFunc(MouseCallBack2);
+    glutKeyboardUpFunc(KeyboardUpCallBack);
     glutKeyboardFunc(KeyboardCallBack);
     glutMainLoop();
 }

@@ -9,6 +9,10 @@ enum Shape{
     fullcustom,
     wirecustom
 };
+enum TextureScheme{
+    solidcolor,
+    texture
+};
 struct Vector2{
     float X = 0;
     float Y = 0;
@@ -45,6 +49,10 @@ struct ScriptData{
     Vector3 cameraUp = {0.0f,1.0f,0.0f};
     float FovY = 60.0f;
     vector<GameObject> gameobjects;
+    bool *keys;
+    int mouseX, mouseY, 
+        mouseButton,
+        deltaTimeUs;
 };
 Vector3 vec3Add(Vector3 v1, Vector3 v2){return {v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z};}
 Vector3 vec3Sub(Vector3 v1, Vector3 v2){return {v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z};}
