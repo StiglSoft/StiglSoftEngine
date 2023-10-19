@@ -14,10 +14,12 @@ vector<void*> scripts;
 std::chrono::high_resolution_clock::duration t1, t2;
 bool keys[256];
 void Update(){
+    //Calculates deltaTime
     t2 = std::chrono::high_resolution_clock::now().time_since_epoch();
     scriptData.deltaTimeUs = static_cast<int>(std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
     t1 = std::chrono::high_resolution_clock::now().time_since_epoch();
     ExecuteUpdates(scripts);
+    //Drawing graphics
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -55,17 +57,17 @@ void Update(){
     glFlush(); 
     glutSwapBuffers();
     glutPostRedisplay();
-}
+}//Keydown
 void KeyboardCallBack(unsigned char ch, int x, int y){
     ExecuteKeyboard(scripts,ch);
     keys[ch] = 1;
-}
+}//KeyUp
 void KeyboardUpCallBack(unsigned char ch, int x, int y){
     keys[ch] = 0;
-}
+}//Mouse click
 void MouseCallBack(int button, int state, int x, int y){
     scriptData.mouseButton = button;
-}
+}//Mouse move
 void MouseCallBack2(int x, int y){
     scriptData.mouseX = x;
     scriptData.mouseY = y;

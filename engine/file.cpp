@@ -12,14 +12,13 @@ bool isDirectory(const std::string& path) {
         return false;
     }
     return S_ISDIR(statBuffer.st_mode);
-}
+}//Returns file extension(e. g. .so, .txt)
 string getFileExtension(const std::string& fileName) {
     size_t dotIndex = fileName.find_last_of(".");
-    if (dotIndex != std::string::npos) {
+    if (dotIndex != std::string::npos) 
         return fileName.substr(dotIndex + 1);
-    }
     return "";
-}
+}//ls command
 vector<string> getFilesInDirectory(string path, string extension){
     vector<string> strs;
     DIR* directory = opendir(path.c_str());
