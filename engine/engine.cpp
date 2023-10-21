@@ -14,6 +14,7 @@ vector<void*> scripts;
 std::chrono::high_resolution_clock::duration t1, t2;
 bool keys[256];
 void Update(){
+    //glutGet(GLUT_ELAPSED_TIME);
     //Calculates deltaTime
     t2 = std::chrono::high_resolution_clock::now().time_since_epoch();
     scriptData.deltaTimeUs = static_cast<int>(std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
@@ -21,6 +22,7 @@ void Update(){
     ExecuteUpdates(scripts);
     //Drawing graphics
     glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(scriptData.FovY, (GLfloat)Width / (GLfloat)Height, 0.8f, 100.0f);
@@ -29,7 +31,8 @@ void Update(){
     for (GameObject go : scriptData.gameobjects) {
         glPushMatrix();
         glLoadIdentity();   
-        gluLookAt(scriptData.cameraPosition.X,scriptData.cameraPosition.Y,scriptData.cameraPosition.Z,
+        gluLookAt(
+            scriptData.cameraPosition.X,scriptData.cameraPosition.Y,scriptData.cameraPosition.Z,
             scriptData.cameraTarget.X,scriptData.cameraTarget.Y,scriptData.cameraTarget.Z,
             scriptData.cameraUp.X,scriptData.cameraUp.Y,scriptData.cameraUp.Z);
         glTranslatef(go.transform.position.X, go.transform.position.Y, go.transform.position.Z);
@@ -39,6 +42,10 @@ void Update(){
             glutWireCube(go.transform.scale);
         }else if(go.shape == Shape::fullbox){
             glutSolidCube(go.transform.scale);
+        }else if(go.shape == Shape::wiresphere){
+            glutWireSphere(go.transform.scale,10,10);
+        }else if(go.shape == Shape::fullspere){
+            glutSolidSphere(go.transform.scale,10,10);
         }else if(go.shape == Shape::wirecustom){
             glBegin(GL_LINES);
             for (Vector3 verticle : go.veticles) {
@@ -78,6 +85,8 @@ void InitEngine(int argc, char **argv){
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(Width, Height);
     glutCreateWindow("Stigl Soft Engine");
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
     glutDisplayFunc(Update);
     glutMouseFunc(MouseCallBack);
     glutPassiveMotionFunc(MouseCallBack2);

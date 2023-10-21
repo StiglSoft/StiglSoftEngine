@@ -6,6 +6,8 @@ using namespace std;
 enum Shape{
     wirebox,
     fullbox,
+    wiresphere,
+    fullspere,
     fullcustom,
     wirecustom
 };
