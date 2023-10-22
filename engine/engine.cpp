@@ -21,8 +21,8 @@ void Update(){
     t1 = std::chrono::high_resolution_clock::now().time_since_epoch();
     ExecuteUpdates(scripts);
     //Drawing graphics
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClear(GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(scriptData.FovY, (GLfloat)Width / (GLfloat)Height, 0.8f, 100.0f);
@@ -82,7 +82,7 @@ void MouseCallBack2(int x, int y){
 void InitEngine(int argc, char **argv){
     scriptData.keys = keys;
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(Width, Height);
     glutCreateWindow("Stigl Soft Engine");
     glEnable(GL_DEPTH_TEST);
