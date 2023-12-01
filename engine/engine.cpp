@@ -13,8 +13,32 @@ vector<void*> scripts;
 
 std::chrono::high_resolution_clock::duration t1, t2;
 bool keys[256];
+//Should be moved somewhere else
+void vec3ToGL(Vector3 o, GLfloat d[]){
+    d[0] = o.X;
+    d[1] = o.Y;
+    d[2] = o.Z;
+}
+Vector3 calculateLightIntensity(Vector3 lightPosition, float intensity, Vector3 target, Vector3 color){
+    float distance = v3magnitude(vec3Sub(lightPosition,target));
+    float divFactor = intensity / distance;
+    return vec3Mul(color,divFactor);
+}
+void calculateLights(Vector3 pos){
+    GLfloat buff[4];
+    buff[3] = 1.0f;
+    for(int i =0; i < scriptData.lightsUsed;i++){
+        vec3ToGL(
+            calculateLightIntensity(
+                scriptData.lights[i].position,
+                scriptData.lights[i].intensity,
+                pos,scriptData.lights[i].color),buff);
+        glLightfv(0x4000 + i, GL_DIFFUSE, buff);
+    }
+}
 void Update(){
     //glutGet(GLUT_ELAPSED_TIME);
+
     //Calculates deltaTime
     t2 = std::chrono::high_resolution_clock::now().time_since_epoch();
     scriptData.deltaTimeUs = static_cast<int>(std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count());
@@ -29,8 +53,9 @@ void Update(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     for (GameObject go : scriptData.gameobjects) {
+        calculateLights(go.transform.position);
         glPushMatrix();
-        glLoadIdentity();   
+        glLoadIdentity();
         gluLookAt(
             scriptData.cameraPosition.X,scriptData.cameraPosition.Y,scriptData.cameraPosition.Z,
             scriptData.cameraTarget.X,scriptData.cameraTarget.Y,scriptData.cameraTarget.Z,
@@ -79,23 +104,39 @@ void MouseCallBack2(int x, int y){
     scriptData.mouseX = x;
     scriptData.mouseY = y;
 }
-void InitEngine(int argc, char **argv){
+int InitEngine(int argc, char **argv, const char* title){
     scriptData.keys = keys;
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(Width, Height);
-    glutCreateWindow("Stigl Soft Engine");
+    glutCreateWindow(title);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
+    glEnable(GL_LIGHTING);
+    if(scriptData.lightsUsed > 7)
+        return -1;
+    GLfloat buff[4];
+    buff[3] = 1.0f;
+    for(int i =0; i < scriptData.lightsUsed;i++){
+        glEnable(0x4000 + i);
+        vec3ToGL(
+            vec3Mul(scriptData.lights[i].color,
+                    scriptData.lights[i].intensity
+            ),buff);
+        glLightfv(0x4000 + i, GL_DIFFUSE, buff);
+        vec3ToGL(scriptData.lights[i].position,buff);
+        glLightfv(0x4000 + i, GL_POSITION, buff);
+    }
     glutDisplayFunc(Update);
     glutMouseFunc(MouseCallBack);
     glutPassiveMotionFunc(MouseCallBack2);
     glutKeyboardUpFunc(KeyboardUpCallBack);
     glutKeyboardFunc(KeyboardCallBack);
     glutMainLoop();
+    return 0;
 }
 int main(int argc, char **argv){
     scripts = loadScripts();
     ExecuteStartups(scripts,&scriptData);
-    InitEngine(argc,argv);
+    return InitEngine(argc,argv,"Stiglsoft Engine");
 }

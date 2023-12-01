@@ -8,9 +8,8 @@
 using namespace std;
 bool isDirectory(const std::string& path) {
     struct stat statBuffer;
-    if (stat(path.c_str(), &statBuffer) != 0) {
+    if (stat(path.c_str(), &statBuffer) != 0)
         return false;
-    }
     return S_ISDIR(statBuffer.st_mode);
 }//Returns file extension(e. g. .so, .txt)
 string getFileExtension(const std::string& fileName) {
